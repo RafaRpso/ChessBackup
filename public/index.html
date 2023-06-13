@@ -20,32 +20,33 @@
   </div>
 
   <script>
-    function generateBackup() {
-      var nickname = document.getElementById("usernick").value;
-      console.log(nickname);
-      document.getElementById("loading").innerText = "Loading...";
+function generateBackup() {
+  var nickname = document.getElementById("usernick").value;
+  console.log(nickname);
+  document.getElementById("loading").innerText = "Loading...";
 
-      fetch(`http://https://chess-backup.onrender.com/backup?nickname=${nickname}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to generate backup.');
-          }
-          return response.blob();
-        })
-        .then(blob => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'Chess_Backup.zip';
-          document.body.appendChild(a);
-          a.click();
-          document.getElementById("loading").innerText = "";
-        })
-        .catch(error => {
-          console.error(error);
-          document.getElementById("loading").innerText = "Error: Failed to generate backup.";
-        });
-    }
+  fetch(`/backup?nickname=${nickname}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to generate backup.');
+      }
+      return response.blob();
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Chess_Backup.zip';
+      document.body.appendChild(a);
+      a.click();
+      document.getElementById("loading").innerText = "";
+    })
+    .catch(error => {
+      console.error(error);
+      document.getElementById("loading").innerText = "Error: Failed to generate backup.";
+    });
+}
+
   </script>
 </body>
 </html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chess.com Backup</title>
+</head>
+<body>
+  <div class="card">
+    <h1>Chess.com Backup</h1>
+
+    <div class="form-group">
+      <label for="usernick">Chess.com Nickname</label>
+      <input type="text" id="usernick">
+    </div>
+
+    <button class="btn" onclick="generateBackup()">Backup</button>
+
+    <div id="loading" class="loading"></div>
+  </div>
+
+  <script>
+    function generateBackup() {
+      var nickname = document.getElementById("usernick").value;
+      console.log(nickname);
+      document.getElementById("loading").innerText = "Loading...";
+
+      fetch(`http://localhost:3000/backup?nickname=${nickname}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to generate backup.');
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'Chess_Backup.zip';
+          document.body.appendChild(a);
+          a.click();
+          document.getElementById("loading").innerText = "";
+        })
+        .catch(error => {
+          console.error(error);
+          document.getElementById("loading").innerText = "Error: Failed to generate backup.";
+        });
+    }
+  </script>
+</body>
+</html>

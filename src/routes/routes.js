@@ -1,7 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const app = express(); 
 const { cleanBackupDirectory, requestArchives, requestGamesForMonth, createZipArchive } = require('../controller/apiController');
+
+
+app.use(cors({
+  origin: 'https://chess-backup.onrender.com/' 
+}));
+
 
 // Configurar o Express para servir arquivos estáticos
 router.use(express.static(path.join(__dirname, '../../public')));

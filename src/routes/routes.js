@@ -4,11 +4,8 @@ const path = require('path');
 const app = express(); 
 const { cleanBackupDirectory, requestArchives, requestGamesForMonth, createZipArchive } = require('../controller/apiController');
 
+app.use(cors());
 
-
-
-
-// Configurar o Express para servir arquivos estáticos
 router.use(express.static(path.join(__dirname, '../../public')));
 
 router.get('/', (req, res) => {
